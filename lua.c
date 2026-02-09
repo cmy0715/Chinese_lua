@@ -743,6 +743,11 @@ static int pmain (lua_State *L) {
   else
     l_getenv = &getenv;
   luai_openlibs(L);  /* open standard libraries */
+  if (luaL_dofile(L, "中文编程.lua") != LUA_OK) {
+      const char *err = lua_tostring(L, -1);
+      fprintf(stderr, "加载中文编程 DSL 失败: %s\n", err);
+      lua_pop(L, 1);
+  }
   createargtable(L, argv, argc, script);  /* create table 'arg' */
   lua_gc(L, LUA_GCRESTART);  /* start GC... */
   lua_gc(L, LUA_GCGEN);  /* ...in generational mode */
